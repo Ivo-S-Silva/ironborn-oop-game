@@ -42,9 +42,7 @@ class Game {
       this.objectArray.forEach((element) => {
         if(element.positionY === 0) {
           // Removing the element from the array as he reaches the bottom
-          this.objectArray.shift();
-
-          element.domElement.remove();
+          element.deleteObstacle(element,this.objectArray);      
         };
       
         console.log(this.objectArray.length);
@@ -106,13 +104,12 @@ class Obstacle {
     this.positionY--;
   }
 
-  // deleteObstacle(element){
-  //   if(element.positionY === 0){
-        
-  //       // Delete object from array
-
-
-  //       // Delete DOM element 
-  //   }     
-  // }
+  deleteObstacle(element, obstacleArray){
+    if(element.positionY === 0){
+        obstacleArray.splice(obstacleArray.indexOf(element), 1);
+        // Delete object from array
+        // Delete DOM element
+        element.domElement.remove();
+    }     
+  }
 }
