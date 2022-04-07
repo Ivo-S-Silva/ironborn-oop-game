@@ -15,6 +15,10 @@ function createDomElement(className){
 function drawDomElement(instance){    
     instance.domElement.style.left  = instance.positionX + "%";
     instance.domElement.style.bottom  = instance.positionY + "%";
+
+    instance.domElement.style.width  = instance.obstacleWidth + "px";
+    instance.domElement.style.height  = instance.obstacleHeight + "px";
+
 }
 
 // Starting a new game by creating a new instance of the game class
