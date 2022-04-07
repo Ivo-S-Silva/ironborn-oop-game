@@ -12,3 +12,11 @@
     height: 20px;
     width: 100px;
 }
+
+.obstacle{
+    position: absolute;
+    
+    background-color: red;
+    height: 20px;
+    width: 100px;
+}

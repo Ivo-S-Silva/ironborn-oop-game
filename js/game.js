@@ -19,9 +19,21 @@ class Game {
     }
 
     start(){
+        // create & draw Player
         this.player = new Player();
         this.player.domElement = this.createElement("player");
         this.drawElement(this.player);
+
+        // create & draw Obstacle
+        this.obstacle = new Obstacle();
+        this.obstacle.domElement = this.createElement("obstacle")
+        this.drawElement(this.obstacle);
+
+        let intervalId = setInterval(() => {
+            this.obstacle.moveDown();
+            this.drawElement(this.obstacle);
+            // if (this.obstacle.positionY === 0)
+        }, 50);
     }
 
     movePlayer(direction){
@@ -49,13 +61,23 @@ class Player {
 
     moveLeft(){
         // Moving to the left along the X axis. Decreasing the value of the X axis
-        this.positionX -=2;
+        this.positionX --;
     }    
 
     moveRight(){
-        this.positionX +=2;
+        this.positionX ++;
     }
 }
 
 
-const myPlayer = new Player();
+class Obstacle {
+    constructor(){
+        this.positionX = 50;
+        this.positionY = 90;
+        this.domElement = null;
+    }
+
+    moveDown(){
+        this.positionY --;
+    }
+}
