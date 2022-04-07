@@ -1,0 +1,5 @@
+#board {
+    background-color: rgb(37, 175, 188);
+    outline: 1px solid rgb(56, 175, 255);
+    height: 100vh; /* This sets the witdth of this element as 100% of the viewport height */
+}
