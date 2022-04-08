@@ -10,6 +10,23 @@ function createDomElement(className){
     return newElement;
 }
 
+function updateScore(score){
+    const currentScore = document.getElementById("score");
+    const maxScore = document.getElementById("max-score");
+
+
+    currentScore.innerText = score;
+
+    if(score > maxScore.innerText){
+        maxScore.innerText = score;
+}
+}
+
+function updateTime(time){
+    const currentTime = document.getElementById("time");
+    currentTime.innerText = Math.floor(time);
+}
+
 // Create a function to move a DOM element. instance is passed to identify
 // the element to move
 function drawDomElement(instance){    
@@ -22,7 +39,7 @@ function drawDomElement(instance){
 
 // Starting a new game by creating a new instance of the game class
 // Passing the createDomElement function to be able to execute it at game start
-const game = new Game(createDomElement, drawDomElement);
+const game = new Game(createDomElement, drawDomElement, updateScore, updateTime);
 game.start();
 
 document.addEventListener('keydown', function(event){
@@ -39,6 +56,12 @@ switch(event.key){
         break;
     case "ArrowUp":
         game.shoot();
+        break;
+    case "s":
+        game.runGame("s");
+        break;
+    case "r":
+        game.runGame("r");
         break;
 }
 })

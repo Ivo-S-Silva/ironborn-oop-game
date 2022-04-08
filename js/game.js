@@ -1,13 +1,19 @@
 class Game {
-  constructor(createElement, drawElement, board) {
+  constructor(createElement, drawElement, updateScore, updateTime) {
     this.player = null;
     this.board = document.getElementById("board");
     // It has the function createDomElement inside this property, passed to the constructor
     this.createElement = createElement;
     this.drawElement = drawElement;
+    this.updateScore = updateScore;
+    this.updateTime = updateTime;
     this.obstacleArray = [];
     this.bulletArray = [];
     this.obstacleCounter = 0;
+    this.score = 0;
+    this.time = 0;
+    this.isPaused = false;
+    this.playerFrozen = false;
   }
 
   start() {
@@ -17,62 +23,87 @@ class Game {
     this.drawElement(this.player);
 
     let intervalId = setInterval(() => {
-      // Creating New obstacles
-      if (this.obstacleCounter === 30) {
-        const newObstacle = new Obstacle();
-        newObstacle.domElement = this.createElement("obstacle");
-        this.drawElement(newObstacle);
+      if (this.isPaused === false) {
+        // Creating New obstacles
+        if (this.obstacleCounter === 30) {
+          const newObstacle = new Obstacle();
+          newObstacle.domElement = this.createElement("obstacle");
+          this.drawElement(newObstacle);
 
-        // we add every new obstacle to the obstacle array
-        this.obstacleArray.push(newObstacle);
+          // we add every new obstacle to the obstacle array
+          this.obstacleArray.push(newObstacle);
 
-        this.obstacleCounter = Math.floor(Math.random() * 30);
-      }
-
-      this.obstacleArray.forEach((obstacle) => {
-        if (obstacle.positionY === 0) {
-          // Removing the element from the array as he reaches the bottom
-          obstacle.deleteObstacle(obstacle, this.obstacleArray);
+          this.obstacleCounter = Math.floor(Math.random() * 30);
         }
+        this.obstacleCounter += 1;
 
-        // Moving the obstacles and detecting collision with the player
-        obstacle.moveDown();
-        this.drawElement(obstacle);
-
-        // if there is collision between player and obstacle
-        if (this.detectCollision(this.player, obstacle)) {
-          this.obstacleArray = [];
-          this.bulletArray = [];
-
-          while (this.board.firstChild) {
-              this.board.removeChild(this.board.firstChild);
-          }
-
-          this.player = new Player();
-          this.player.domElement = this.createElement("player");
-          this.drawElement(this.player);
-        }
-
-        // Detecting collision between specific objects and the specific bullets
-        this.bulletArray.forEach((bullet) => {
-          if (this.detectCollision(bullet, obstacle)) {
-            bullet.deleteBullet(bullet, this.bulletArray);
+        // Removing obstacles from the array as he reaches the bottom
+        this.obstacleArray.forEach((obstacle) => {
+          if (obstacle.positionY === 0) {
             obstacle.deleteObstacle(obstacle, this.obstacleArray);
           }
+
+          // Moving the obstacles and detecting collision with the player
+          obstacle.moveDown();
+          this.drawElement(obstacle);
+
+          // if there is collision between player and obstacle
+          if (this.detectCollision(this.player, obstacle)) {
+            this.obstacleArray = [];
+            this.bulletArray = [];
+            this.score = 0;
+            this.time = 0;
+
+            while (this.board.firstChild) {
+              this.board.removeChild(this.board.firstChild);
+            }
+
+            this.player = new Player();
+            this.player.domElement = this.createElement("player");
+            this.drawElement(this.player);
+          }
+
+          // Detecting collision between specific objects and the specific bullets
+          this.bulletArray.forEach((bullet) => {
+            if (this.detectCollision(bullet, obstacle)) {
+              bullet.deleteBullet(bullet, this.bulletArray);
+              obstacle.deleteObstacle(obstacle, this.obstacleArray);
+              this.score += 100;
+            }
+          });
         });
-      });
-      this.obstacleCounter += 1;
 
-      //Moving the bullets and deleting at the top
-      this.bulletArray.forEach((bullet) => {
-        if (bullet.positionY === 100) {
-          bullet.deleteBullet(bullet, this.bulletArray);
-        }
+        //Moving the bullets and deleting at the top
+        this.bulletArray.forEach((bullet) => {
+          if (bullet.positionY === 100) {
+            bullet.deleteBullet(bullet, this.bulletArray);
+          }
 
-        bullet.moveUp();
-        this.drawElement(bullet);
-      });
-    }, 50);
+          bullet.moveUp();
+          this.drawElement(bullet);
+        });
+
+        //Score Updating and incrementing
+        this.updateScore(this.score);
+        this.score++;
+
+        //Scoreboard timer updating and incrementing
+        this.updateTime(this.time);
+        this.time += 0.1;
+      }
+    }, 100);
+  }
+
+  runGame(key) {
+    if (key === "s") {
+      this.isPaused = true;
+      this.playerFrozen = true;
+    };
+    if (key === "r") {
+      this.isPaused = false;
+      this.playerFrozen = false;
+
+    };
   }
 
   detectCollision(element, obstacle) {
@@ -87,6 +118,7 @@ class Game {
   }
 
   movePlayer(direction) {
+    if (!this.playerFrozen){
     switch (direction) {
       case "left":
         this.player.moveLeft();
@@ -95,6 +127,7 @@ class Game {
         this.player.moveRight();
         break;
     }
+  }
     // Each time the player moves, the element is redrawn
     // Calls the drawElement function and says it's the player
     // that is moving.
@@ -122,13 +155,13 @@ class Player {
   moveLeft() {
     // Moving to the left along the X axis. Decreasing the value of the X axis
     if (this.positionX > 0) {
-      this.positionX--;
+      this.positionX -= 2;
     }
   }
 
   moveRight() {
-    if (this.positionX < 92) {
-      this.positionX++;
+    if (this.positionX < 90) {
+      this.positionX += 2;
     }
   }
 }
@@ -163,8 +196,8 @@ class Bullet {
   }
 
   moveUp() {
-    this.positionY++;
-  }
+    this.positionY += 1.5;
+  } 
 
   deleteBullet(bullet, bulletArray) {
     bulletArray.splice(bulletArray.indexOf(bullet), 1);

@@ -1,8 +1,38 @@
+body{
+    font-family: monospace;
+    font-size: 32px;
+    color: white;
+}
+
+#scoreboard{
+    position: relative;
+    height: 15vh;
+    z-index: 1;
+    background-color: black;
+}
+
+#score-elm {
+    position: absolute;
+    top: 4vh;
+}
+
+#max-score-elm{
+    position: absolute;
+    top: 8vh;
+}
+
+#time-elm {
+    position: absolute;
+    top: 6vh;
+    right:20vh;
+}
+
 #board {
     background-color: rgb(37, 175, 188);
     outline: 1px solid rgb(56, 175, 255);
-    height: 100vh; /* This sets the witdth of this element as 100% of the viewport height */
+    height: 85vh; /* This sets the witdth of this element as 100% of the viewport height */
     position: relative;
+    z-index: -1;
 }
 
 .player{
@@ -13,7 +43,7 @@
 
 .obstacle{
     position: absolute;
-    
+    z-index: 0;
     background-color: red;
 }
 
