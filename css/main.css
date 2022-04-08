@@ -35,6 +35,13 @@ body{
     z-index: -1;
 }
 
+#swipe-zone {
+    position: fixed;
+    bottom: 0;
+    height: 30vh;
+    width: 100vw;
+}
+
 .player{
     position: absolute;
     

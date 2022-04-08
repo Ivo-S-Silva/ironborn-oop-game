@@ -25,7 +25,7 @@ class Game {
     let intervalId = setInterval(() => {
       if (this.isPaused === false) {
         // Creating New obstacles
-        if (this.obstacleCounter === 30) {
+        if (this.obstacleCounter === 35) {
           const newObstacle = new Obstacle();
           newObstacle.domElement = this.createElement("obstacle");
           this.drawElement(newObstacle);
@@ -91,7 +91,7 @@ class Game {
         this.updateTime(this.time);
         this.time += 0.1;
       }
-    }, 100);
+    }, 70);
   }
 
   runGame(key) {
