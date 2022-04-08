@@ -13,12 +13,11 @@ function createDomElement(className){
 // Create a function to move a DOM element. instance is passed to identify
 // the element to move
 function drawDomElement(instance){    
-    instance.domElement.style.left  = instance.positionX + "%";
-    instance.domElement.style.bottom  = instance.positionY + "%";
+    instance.domElement.style.left  = instance.positionX + "vw";
+    instance.domElement.style.bottom  = instance.positionY + "vh";
 
-    instance.domElement.style.width  = instance.obstacleWidth + "px";
-    instance.domElement.style.height  = instance.obstacleHeight + "px";
-
+    instance.domElement.style.width  = instance.width + "vw";
+    instance.domElement.style.height  = instance.height + "vh";
 }
 
 // Starting a new game by creating a new instance of the game class
@@ -37,6 +36,9 @@ switch(event.key){
         break;
     case "ArrowLeft":
         game.movePlayer("left");
+        break;
+    case "ArrowUp":
+        game.shoot();
         break;
 }
 })

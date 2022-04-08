@@ -9,14 +9,16 @@
     position: absolute;
     
     background-color: green;
-    height: 20px;
-    width: 100px;
 }
 
 .obstacle{
     position: absolute;
     
     background-color: red;
-    /* height: 20px;
-    width: 100px; */
+}
+
+.bullet {
+    position: absolute;
+
+    background-color:  yellow;
 }
