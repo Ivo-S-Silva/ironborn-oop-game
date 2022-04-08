@@ -75,7 +75,7 @@ class Game {
 
         //Moving the bullets and deleting at the top
         this.bulletArray.forEach((bullet) => {
-          if (bullet.positionY === 100) {
+          if (bullet.positionY > 100) {
             bullet.deleteBullet(bullet, this.bulletArray);
           }
 
